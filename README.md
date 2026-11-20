@@ -1,4 +1,4 @@
-# Pay101 Android App
+# Pay101 Mobile Apps (Android + iOS)
 
 A native Android shell (Kotlin + WebView) for https://pay101.io.
 
@@ -39,3 +39,32 @@ Push this folder to a GitHub repo. The included workflow (`.github/workflows/bui
 1. **Build → Generate Signed App Bundle / APK** and create a keystore. Keep it safe; you can't update the app without it.
 2. Upload the `.aab` to Google Play Console.
 3. For the `pay101.io` links to open in the app automatically, host `/.well-known/assetlinks.json` on pay101.io with your signing certificate's SHA-256 fingerprint.
+
+---
+
+# iOS app (`ios/` folder)
+
+SwiftUI + WKWebView with the same behaviour as Android: splash screen, pay101 domains in-app,
+other links open in Safari or the right app, HTTPS only, saved login, pull to refresh,
+swipe back/forward, offline screen with Retry, file uploads, and JS alerts. Requires iOS 15+.
+
+## Run on a Mac (Xcode)
+1. Install Xcode from the Mac App Store.
+2. Open `ios/Pay101.xcodeproj`.
+3. Select the **Pay101** target → **Signing & Capabilities** → choose your Apple ID as Team
+   (a free Apple ID works for testing on your own iPhone; the app then lasts 7 days).
+4. Pick a simulator or your connected iPhone and press **▶ Run**.
+
+`Pay101.xcodeproj` is generated from `ios/project.yml` by CI. To regenerate it yourself:
+`brew install xcodegen && cd ios && xcodegen generate`.
+
+## Install without a Mac (Windows/Linux laptop)
+CI publishes an unsigned build at
+https://github.com/kartikmishra543/pay101-android/releases/download/ios-latest/Pay101-unsigned.ipa
+Install it on your iPhone with **Sideloadly** (sideloadly.io) or **AltStore** (altstore.io) using
+your Apple ID. With a free Apple ID it must be refreshed every 7 days.
+
+## App Store
+Needs an Apple Developer account ($99/year) and a Mac (or a CI signing setup).
+Apple can reject apps that are only a website wrapper (guideline 4.2), so plan to add
+native value before submitting, e.g. Face ID login lock, push notifications for payouts and settlements.
