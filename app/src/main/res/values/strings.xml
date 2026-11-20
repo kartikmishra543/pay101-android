@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Pay101</string>
+    <string name="offline_title">You\'re offline</string>
+    <string name="offline_message">Check your internet connection and try again.</string>
+    <string name="retry">Retry</string>
+    <string name="no_app_found">No app found to open this link</string>
+    <string name="no_file_picker">No file picker available</string>
+    <string name="downloading">Downloading %1$s…</string>
+</resources>

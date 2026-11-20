@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Placeholder "P" mark. Replace with the official Pay101 logo via
+     Android Studio > New > Image Asset. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M40,32h16c9.4,0 16,6.2 16,14.5S65.4,61 56,61h-8v15h-8V32zM48,39.5v14h7.6c4.6,0 7.9,-2.9 7.9,-7s-3.3,-7 -7.9,-7H48z" />
+</vector>
