@@ -7,3 +7,9 @@ local.properties
 captures/
 *.jks
 *.keystore
+ios/build/
+ios/build-sim/
+ios/Payload/
+ios/*.ipa
+ios/sim.log
+xcuserdata/

@@ -1,0 +1,24 @@
+# XcodeGen spec. CI generates Pay101.xcodeproj from this file.
+# On a Mac you can also run:  brew install xcodegen && cd ios && xcodegen generate
+name: Pay101
+options:
+  bundleIdPrefix: io.pay101
+  deploymentTarget:
+    iOS: "15.0"
+targets:
+  Pay101:
+    type: application
+    platform: iOS
+    sources: [Pay101]
+    scheme: {}
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: io.pay101.app
+        INFOPLIST_FILE: Pay101/Info.plist
+        GENERATE_INFOPLIST_FILE: NO
+        MARKETING_VERSION: 1.0.0
+        CURRENT_PROJECT_VERSION: 1
+        TARGETED_DEVICE_FAMILY: "1,2"
+        SWIFT_VERSION: "5.0"
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ENABLE_PREVIEWS: YES

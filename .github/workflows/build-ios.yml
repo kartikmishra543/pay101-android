@@ -1,0 +1,62 @@
+name: Build iOS
+
+on:
+  push:
+    branches: [ main ]
+    paths: [ 'ios/**', '.github/workflows/build-ios.yml' ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+defaults:
+  run:
+    shell: bash   # bash with -eo pipefail, so a failed xcodebuild fails the step
+
+jobs:
+  build:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Generate Xcode project
+        run: |
+          brew install xcodegen
+          cd ios && xcodegen generate
+
+      - name: Build for Simulator (compile check)
+        run: |
+          cd ios
+          xcodebuild -project Pay101.xcodeproj -scheme Pay101 -configuration Debug \
+            -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' \
+            -derivedDataPath build-sim build | tee sim.log | tail -40
+          grep -E "(warning|error):" sim.log | sort -u | head -60 || true
+
+      - name: Build unsigned device app
+        run: |
+          cd ios
+          xcodebuild -project Pay101.xcodeproj -scheme Pay101 -configuration Release \
+            -sdk iphoneos -destination 'generic/platform=iOS' \
+            -derivedDataPath build \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" build | tail -40
+          mkdir -p Payload
+          cp -R build/Build/Products/Release-iphoneos/Pay101.app Payload/
+          zip -qry Pay101-unsigned.ipa Payload
+
+      - name: Publish unsigned IPA as a release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ios-latest
+          name: Pay101 iOS (latest unsigned build)
+          make_latest: false
+          body: |
+            Unsigned iOS build. Install with Sideloadly or AltStore using your Apple ID,
+            or open ios/Pay101.xcodeproj in Xcode on a Mac and run it on your iPhone.
+          files: ios/Pay101-unsigned.ipa
+
+      - name: Commit generated Xcode project
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add ios/Pay101.xcodeproj
+          git diff --cached --quiet || (git commit -m "Update generated Xcode project [skip ci]" && git push)
